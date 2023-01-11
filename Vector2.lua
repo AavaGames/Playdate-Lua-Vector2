@@ -1,82 +1,22 @@
 --[[
 	
-	MADE BY HASNAIN RAZA
-	
-	Vector2 is a simple two dimensional vector mathematics class.
-	
-	DEMO (all features)
-	
-	local a, b, c = Vector2.new(1, 1), Vector2.new(2, 2), Vector2.new(3, 3)
-	
-	print(a + b)
-	print(a:addVectors(b))
-	print(Vector2.addVectors(a, b))
-	
-	print(a - b)
-	print(a:subtractVectors(b))
-	print(Vector2.subtractVectors(a, b))
-		
-	print(a * b)
-	print(a:multiplyVectors(b))
-	print(Vector2.multiplyVectors(a, b))
-		
-	print(a / b)
-	print(a:divideVectors(b))
-	print(Vector2.divideVectors(a, b))
-	
-	print(-c)
-	
-	print(a + 1)
-	print(a:addScalar(1))
-	print(Vector2.addScalar(a, b))
-	
-	print(a - 1)
-	print(a:subtractScalar(1))
-	print(Vector2.subtractScalar(a, b))
-	
-	print(a * 1)
-	print(a:multiplyScalar(1))
-	print(Vector2.multiplyScalar(a, b))
-	
-	print(a / 1)
-	print(a:multiplyScalar(1))
-	print(Vector2.multiplyScalar(a, b))
-	
-	print(c.magnitude)
-	print(c:getMagnitude())
-	print(Vector2.getMagnitude(c))
-	
-	print(c.unit)
-	print(c:getUnitVector())
-	print(Vector2.getUnitVector(c))
-	
-	print(a == b)
-	print(a:equals(b, 0.01))
-	print(Vector2.equals(a, b, 0.01))
-	
-	print(
-		c:mapVector(function(x, y)
-			return (x + y), (x - y)
-		end)
-	)
-	
-	It is recommended that you rely on arithmetic operators rather than calling functions
-	because error handling is done primarily on the operators.
-	
---]]
+	Made by Hasnain Raza
+	Additions by Philip Fertsman (@aavagames)
 
+]]
 
-local Vector2 = {}
+Vector2 = {}
 
 --// METAMETHODS //--
 
+-- Unary Minus: Negate operand
 local function umn(self)
 	return (self * -1)
 end
 
 local function add(self, value)
 	if (type(value) == "number") then
-		return Vector2.addScalar(self, value)
+		return Vector2.addFloat(self, value)
 	elseif (type(value) == "table") then
 		if (value.className) and (value.className == "Vector2") then
 			return Vector2.addVectors(self, value)
@@ -90,7 +30,7 @@ end
 
 local function sub(self, value)
 	if (type(value) == "number") then
-		return Vector2.subtractScalar(self, value)
+		return Vector2.subtractFloat(self, value)
 	elseif (type(value) == "table") then
 		if (value.className) and (value.className == "Vector2") then
 			return Vector2.subtractVectors(self, value)
@@ -104,7 +44,7 @@ end
 
 local function mul(self, value)
 	if (type(value) == "number") then
-		return Vector2.multiplyScalar(self, value)
+		return Vector2.multiplyFloat(self, value)
 	elseif (type(value) == "table") then
 		if (value.className) and (value.className == "Vector2") then
 			return Vector2.multiplyVectors(self, value)
@@ -118,7 +58,7 @@ end
 
 local function div(self, value)
 	if (type(value) == "number") then
-		return Vector2.divideScalar(self, value)
+		return Vector2.divideFloat(self, value)
 	elseif (type(value) == "table") then
 		if (value.className) and (value.className == "Vector2") then
 			return Vector2.divideVectors(self, value)
@@ -215,26 +155,32 @@ function Vector2.divideVectors(firstVector2, secondVector2)
 	return Vector2.new(firstVector2.x / secondVector2.x, firstVector2.y / secondVector2.y)
 end
 
-function Vector2.addScalar(vector2, scalar)
-	return Vector2.new(vector2.x + scalar, vector2.y + scalar)
+function Vector2.addFloat(vector2, float)
+	return Vector2.new(vector2.x + float, vector2.y + float)
 end
 
-function Vector2.subtractScalar(vector2, scalar)
-	return Vector2.new(vector2.x - scalar, vector2.y - scalar)
+function Vector2.subtractFloat(vector2, float)
+	return Vector2.new(vector2.x - float, vector2.y - float)
 end
 
-function Vector2.multiplyScalar(vector2, scalar)
-	return Vector2.new(vector2.x * scalar, vector2.y * scalar)
+function Vector2.multiplyFloat(vector2, float)
+	return Vector2.new(vector2.x * float, vector2.y * float)
 end
 
-function Vector2.divideScalar(vector2, scalar)
-	return Vector2.new(vector2.x / scalar, vector2.y / scalar)
+function Vector2.divideFloat(vector2, float)
+	return Vector2.new(vector2.x / float, vector2.y / float)
 end
 
 function Vector2.mapVector(vector2, mapFunction)
 	local x, y = mapFunction(vector2.x, vector2.y)
 	return Vector2.new(x, y)
 end
+
+--[[
+	c:mapVector(function(x, y)
+        return (x + y), (x - y)
+    end)
+]]
 
 function Vector2.equals(firstVector2, secondVector2, epsilon)
 	return ((firstVector2 - secondVector2).magnitude < epsilon)
@@ -249,6 +195,40 @@ end
 
 function Vector2.getUnitVector(vector2)
 	return (vector2/vector2.magnitude)
+end
+
+function Vector2.clamp(vector2, minVector, maxVector)
+	vector2.x = math.clamp(vector2.x, minVector.x, maxVector.x)
+	vector2.y = math.clamp(vector2.y, minVector.y, maxVector.y)
+	return vector2
+end
+
+function Vector2.lerp(startVector, endVector, journey)
+	error("Vector2.lerp not implemented")
+end
+
+function Vector2.zero()
+	return Vector2.new(0, 0)
+end
+
+function Vector2.one()
+	return Vector2.new(1, 1)
+end
+
+function Vector2.right() 
+	return Vector2.new(1, 0)
+end
+
+function Vector2.left() 
+	return Vector2.new(-1, 0)
+end
+
+function Vector2.up() 
+	return Vector2.new(0, -1)
+end
+
+function Vector2.down() 
+	return Vector2.new(0, 1)
 end
 
 --// INSTRUCTIONS //--
