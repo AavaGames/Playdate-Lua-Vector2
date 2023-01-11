@@ -193,7 +193,7 @@ function Vector2.getMagnitude(vector2)
 	)
 end
 
-function Vector2.getUnitVector(vector2)
+function Vector2.normalize(vector2)
 	return (vector2/vector2.magnitude)
 end
 
@@ -205,6 +205,10 @@ end
 
 function Vector2.lerp(startVector, endVector, journey)
 	error("Vector2.lerp not implemented")
+end
+
+function Vector2.dot(startVector, endVector, journey)
+	error("Vector2.dot not implemented")
 end
 
 function Vector2.zero()
