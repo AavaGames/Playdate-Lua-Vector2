@@ -224,8 +224,31 @@ function Vector2.dot(vector1, vector2)
 	return vector1.x * vector2.x + vector1.y * vector2.y; 
 end
 
+-- Distance Testing (500 iterations on device) --
+-- Euclidean took 258ms
+-- Cheby took 24ms
+-- Taxi took 22ms
+
+-- Euclidean distance
 function Vector2.distance(vector1, vector2)
 	return Vector2.getMagnitude((vector1-vector2))
+end
+
+-- Euclidean distance which is floored in the end
+function Vector2.distance_euc_floored(vector1, vector2)
+	return math.floor(Vector2.getMagnitude((vector1-vector2)))
+end
+
+-- Chebyshev distance (fixes diagonal distance of Manhattan distance)
+function Vector2.distance_cheby(vector1, vector2)
+	return math.max(math.abs(vector2.x - vector1.x), math.abs(vector2.y - vector1.y))
+end
+
+-- Taxicab distance (cardinal step based distance)
+function Vector2.distance_taxi(vector1, vector2)
+	print(vector1.x, vector1.y, " + ", vector2.x, vector2.y, " | (", vector2.x - vector1.x, ") + (", vector2.y - vector1.y, ") = ",
+	(vector2.x - vector1.x) + (vector2.y - vector1.y))
+	return math.abs(vector2.x - vector1.x) + math.abs(vector2.y - vector1.y)
 end
 
 -- "Static"
