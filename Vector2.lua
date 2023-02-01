@@ -246,8 +246,6 @@ end
 
 -- Taxicab distance (cardinal step based distance)
 function Vector2.distance_taxi(vector1, vector2)
-	print(vector1.x, vector1.y, " + ", vector2.x, vector2.y, " | (", vector2.x - vector1.x, ") + (", vector2.y - vector1.y, ") = ",
-	(vector2.x - vector1.x) + (vector2.y - vector1.y))
 	return math.abs(vector2.x - vector1.x) + math.abs(vector2.y - vector1.y)
 end
 
